@@ -1,0 +1,59 @@
+body {
+    margin: 0 auto;
+    width: 40%;
+    margin-top: 50px;
+    background-color: aquamarine;
+}
+
+.form {
+    display: grid;
+    border: none;
+    padding: 30px;
+    border-radius: 30px;
+    background-color: #fff;
+}
+
+label {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.btn input {
+    background-color: red;
+    padding: 10px;
+    border: none;
+    color: #fff;
+    font-weight: 400;
+}
+
+.form div {
+    margin-bottom: 20px;
+}
+
+/* input {
+    border: none;
+    border-bottom: 1px solid;
+} */
+.slot div {
+    margin-left: 50px;
+}
+
+p {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+body h1 {
+    text-align: center;
+}
+.check-box label,
+.radio label,
+.slot label{
+    font-size: 16px;
+    font-weight: 300;
+}
+.error{
+    display: none;
+
+    color: red;
+}
