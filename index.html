@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Html form</title>
+    <title>HTML Form</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>All input types</h1>
+    <h1>All Input Types</h1>
 
     <form class="form">
         <div class="name">
@@ -52,7 +52,7 @@
             <label for="js">JavaScript</label><br>
             <div id="checkbox-error" class="error"></div>
         </div>
-        
+
         <div class="color">
             <label for="favcolor">Select your favorite color:</label>
             <input type="color" id="favcolor" name="favcolor" value="#0000">
@@ -82,18 +82,38 @@
             <label for="vol">Rate your Skills (0 to 100):</label>
             <input type="range" id="vol" name="vol" min="0" max="100">
             <span id="range-value">0</span>
-        </div>        
+        </div>
         <div class="file">
             <label for="myfile">Select a file:</label>
             <input type="file" id="myfile" name="myfile">
             <div id="file-error" class="error"></div>
-        </div>        
+        </div>
         <div class="btn">
             <input type="reset" value="Reset">
             <input type="submit" value="Submit">
         </div>
-
     </form>
+
+    <!-- Table to display the form data -->
+    <h2>Submitted Data</h2>
+    <table id="data-table">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Language Preference</th>
+                <th>Experience</th>
+                <th>Skills Rating</th>
+                <th>File</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Data rows will be added here -->
+        </tbody>
+    </table>
+
     <script src="script.js"></script>
 </body>
 

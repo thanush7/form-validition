@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
         let isValid = true;
 
-      
+        // Gather form input values
         let username = document.getElementById("username").value.trim();
         let password = document.getElementById("pwd").value.trim();
         let email = document.getElementById("email").value.trim();
@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let fileInput = document.getElementById("myfile");
         let checkboxes = document.querySelectorAll("input[type='checkbox']");
 
+        // Validations
         if (username === "") {
             const nameError = document.getElementById("name-error");
             nameError.textContent = "Username is required";
@@ -39,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
             passwordError.style.display = "none";
         }
 
-
         let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (email === "") {
             const emailError = document.getElementById("email-error");
@@ -56,8 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
             emailError.style.display = "none";
         }
 
-  
-        let phonePattern = /^\d{7,15}$/;  
+        let phonePattern = /^\d{7,15}$/;
         if (phone === "") {
             const phoneError = document.getElementById("number-error");
             phoneError.textContent = "Phone number is required";
@@ -88,6 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const radioError = document.getElementById("radio-error");
             radioError.style.display = "none";
         }
+
         if (experience < 1 || experience > 5 || experience === "") {
             const experienceError = document.getElementById("experience-error");
             experienceError.textContent = "Experience must be between 1 and 5 years";
@@ -115,9 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 fileError.style.display = "block";
                 isValid = false;
             }
-
         }
-
 
         let checkboxChecked = false;
         checkboxes.forEach(checkbox => {
@@ -136,26 +134,65 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (isValid) {
+            // Create a new row in the table
+            let tableBody = document.querySelector("#data-table tbody");
+
+            let newRow = document.createElement("tr");
+
+            // Add table cells for the form data
+            let usernameCell = document.createElement("td");
+            usernameCell.textContent = username;
+            newRow.appendChild(usernameCell);
+
+            let passwordCell = document.createElement("td");
+            passwordCell.textContent = password;
+            newRow.appendChild(passwordCell);
+
+            let emailCell = document.createElement("td");
+            emailCell.textContent = email;
+            newRow.appendChild(emailCell);
+
+            let phoneCell = document.createElement("td");
+            phoneCell.textContent = phone;
+            newRow.appendChild(phoneCell);
+
+            let selectedLanguage = "";
+            radioButtons.forEach(radio => {
+                if (radio.checked) {
+                    selectedLanguage = radio.value;
+                }
+            });
+            let languageCell = document.createElement("td");
+            languageCell.textContent = selectedLanguage;
+            newRow.appendChild(languageCell);
+
+            let experienceCell = document.createElement("td");
+            experienceCell.textContent = experience;
+            newRow.appendChild(experienceCell);
+
+            let skillsRatingCell = document.createElement("td");
+            skillsRatingCell.textContent = document.getElementById("vol").value;
+            newRow.appendChild(skillsRatingCell);
+
+            let fileCell = document.createElement("td");
+            if (fileInput.files.length > 0) {
+                fileCell.textContent = fileInput.files[0].name;
+            } else {
+                fileCell.textContent = "No file selected";
+            }
+            newRow.appendChild(fileCell);
+
+            // Append the new row to the table
+            tableBody.appendChild(newRow);
+
+            // Reset the form
+            event.target.reset();
             alert("Form submitted successfully!");
-            event.target.submit();
         }
     });
 
-    document.querySelector("input[type='reset']").addEventListener("click", function () {
-      
-        const errorMessages = document.querySelectorAll(".error");
-        errorMessages.forEach(error => {
-            error.style.display = "none";
-        });
-    });
-});
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    const rangeInput = document.getElementById("vol");
-    const rangeValue = document.getElementById("range-value");
-
-    rangeInput.addEventListener("input", function () {
-        rangeValue.textContent = rangeInput.value;  
+    // Range input value display
+    document.querySelector("#vol").addEventListener("input", function () {
+        document.querySelector("#range-value").textContent = this.value;
     });
 });
