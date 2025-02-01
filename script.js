@@ -109,19 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (!file) {
             document.getElementById("file-error").textContent = "Please upload a file";
             isValid = false;
-        } else {
-            const fileSize = file.size / 1024 / 1024; // Convert to MB
-            const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
-            if (!allowedTypes.includes(file.type)) {
-                document.getElementById("file-error").textContent = "Please upload a file";
-                isValid = false;
-            }
-            if (fileSize > 5) {
-                document.getElementById("file-error").textContent = "Please upload a file";
-                isValid = false;
-            }
         }
-
 
         // Show all error messages if invalid
         document.querySelectorAll(".error-message").forEach(error => {
@@ -164,35 +152,36 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // Edit Record Function
-    window.editRecord = function (button) {
-        const row = button.closest("tr");
-        const cells = row.querySelectorAll("td");
+    // Edit Record Function
+window.editRecord = function (button) {
+    const row = button.closest("tr");
+    const cells = row.querySelectorAll("td");
 
-        document.getElementById("username").value = cells[0].textContent;
-        document.getElementById("pwd").value = cells[1].textContent;
-        document.getElementById("email").value = cells[2].textContent;
-        document.querySelector("input[name='phone']").value = cells[3].textContent;
-        document.getElementById("appt").value = cells[4].textContent;
-        document.getElementById("bdaymonth").value = cells[5].textContent;
-        document.getElementById("week").value = cells[6].textContent;
-        document.getElementById("quantity").value = cells[9].textContent;
-        document.getElementById("vol").value = cells[10].textContent;
+    // Set form input values from the selected row's cells
+    document.getElementById("username").value = cells[0].textContent;
+    document.getElementById("pwd").value = cells[1].textContent;
+    document.getElementById("email").value = cells[2].textContent;
+    document.querySelector("input[name='phone']").value = cells[3].textContent;
+    document.getElementById("appt").value = cells[6].textContent;  // Slot time
+    document.getElementById("bdaymonth").value = cells[7].textContent;  // Month
+    document.getElementById("week").value = cells[8].textContent;  // Week
+    document.getElementById("quantity").value = cells[9].textContent;
+    document.getElementById("vol").value = cells[10].textContent;
+    // Set radio button for favorite language
+    const selectedLanguage = cells[4].textContent;
+    document.querySelectorAll("input[name='fav_language']").forEach(radio => {
+        radio.checked = (radio.value === selectedLanguage);
+    });
 
-        // Set radio button
-        const selectedLanguage = cells[7].textContent;
-        document.querySelectorAll("input[name='fav_language']").forEach(radio => {
-            radio.checked = (radio.value === selectedLanguage);
-        });
+    // Set checkboxes for selected languages
+    const selectedLanguages = cells[5].textContent.split(", ");
+    document.querySelectorAll("input[name='language']").forEach(checkbox => {
+        checkbox.checked = selectedLanguages.includes(checkbox.value);
+    });
 
-        // Set checkboxes
-        const selectedLanguages = cells[8].textContent.split(", ");
-        document.querySelectorAll("input[name='language']").forEach(checkbox => {
-            checkbox.checked = selectedLanguages.includes(checkbox.value);
-        });
-
-        editingRow = row;
-        openForm();
-    };
+    editingRow = row;  // Mark the row being edited
+    openForm();  // Open the form for editing
+};
 
     // Delete Record Function
     window.deleteRecord = function (button) {
@@ -206,6 +195,29 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("range-value").textContent = this.value;
     });
 
+
+    document.getElementById("search-input").addEventListener("input", function() {
+        const searchTerm = this.value.toLowerCase();
+        const rows = document.querySelectorAll("#data-table tbody tr");
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll("td");
+            let matchFound = false;
+
+            cells.forEach(cell => {
+                if (cell.textContent.toLowerCase().includes(searchTerm)) {
+                    matchFound = true;
+                }
+            });
+
+            if (matchFound) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    });
+    document.querySelector(".form").reset();
     // Global Functions
     window.openForm = openForm;
     window.closeForm = closeForm;
