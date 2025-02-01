@@ -14,7 +14,54 @@ document.addEventListener("DOMContentLoaded", function () {
         let fileInput = document.getElementById("myfile");
         let checkboxes = document.querySelectorAll("input[type='checkbox']");
 
-        // Validations
+        // Validate Exam Venue (Slot Time, Month, Week)
+        let slotTime = document.getElementById("appt").value;
+        let month = document.getElementById("bdaymonth").value;
+        let week = document.getElementById("week").value;
+
+        if (!slotTime) {
+            const slotError = document.getElementById("slot-error");
+            slotError.textContent = "Please select a slot time.";
+            slotError.style.display = "block";
+            isValid = false;
+        } else {
+            const slotError = document.getElementById("slot-error");
+            slotError.style.display = "none";
+        }
+
+        if (!month) {
+            const monthError = document.getElementById("month-error");
+            monthError.textContent = "Please select a month.";
+            monthError.style.display = "block";
+            isValid = false;
+        } else {
+            const monthError = document.getElementById("month-error");
+            monthError.style.display = "none";
+        }
+
+        if (!week) {
+            const weekError = document.getElementById("week-error");
+            weekError.textContent = "Please select a week.";
+            weekError.style.display = "block";
+            isValid = false;
+        } else {
+            const weekError = document.getElementById("week-error");
+            weekError.style.display = "none";
+        }
+
+        // Validate Rate Your Skills (0 to 100)
+        let skillsRating = document.getElementById("vol").value;
+        if (skillsRating > 20 && skillsRating < 100) {
+            const skillsError = document.getElementById("skills-error");
+            skillsError.textContent = "Skills rating must be between 20 and 100.";
+            skillsError.style.display = "block";
+            isValid = false;
+        } else {
+            const skillsError = document.getElementById("skills-error");
+            skillsError.style.display = "none";
+        }
+
+        // Other validations (username, password, email, etc.)
         if (username === "") {
             const nameError = document.getElementById("name-error");
             nameError.textContent = "Username is required";
@@ -171,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
             newRow.appendChild(experienceCell);
 
             let skillsRatingCell = document.createElement("td");
-            skillsRatingCell.textContent = document.getElementById("vol").value;
+            skillsRatingCell.textContent = skillsRating;
             newRow.appendChild(skillsRatingCell);
 
             let fileCell = document.createElement("td");
