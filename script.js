@@ -1,245 +1,212 @@
 document.addEventListener("DOMContentLoaded", function () {
+    let editingRow = null; // Track the row being edited
+
+    // Function to clear error messages
+    function clearErrors() {
+        document.querySelectorAll(".error-message").forEach(error => {
+            error.textContent = "";
+            error.style.display = "none";
+        });
+    }
+
+    // Function to open the form popup
+    function openForm() {
+        document.getElementById("form-popup").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+    }
+
+    // Function to close the form popup and reset fields
+    function closeForm() {
+        document.getElementById("form-popup").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+        clearErrors();
+        document.querySelector(".form").reset();
+        editingRow = null; // Reset editing mode
+    }
+
+    // Event Listeners
+    document.getElementById("add-button").addEventListener("click", openForm);
+    document.querySelector(".close-btn").addEventListener("click", closeForm);
+
+    // Clear errors on form reset
+    document.querySelector(".form").addEventListener("reset", function() {
+        clearErrors();
+    });
+
+    // Form Submit Handler
     document.querySelector(".form").addEventListener("submit", function (event) {
         event.preventDefault();
         let isValid = true;
 
-        // Gather form input values
+        // Get form values
         let username = document.getElementById("username").value.trim();
         let password = document.getElementById("pwd").value.trim();
         let email = document.getElementById("email").value.trim();
         let phone = document.querySelector("input[name='phone']").value.trim();
         let experience = document.getElementById("quantity").value;
-
-        let radioButtons = document.querySelectorAll("input[name='fav_language']");
-        let fileInput = document.getElementById("myfile");
-        let checkboxes = document.querySelectorAll("input[type='checkbox']");
-
-        // Validate Exam Venue (Slot Time, Month, Week)
-        let slotTime = document.getElementById("appt").value;
-        let month = document.getElementById("bdaymonth").value;
-        let week = document.getElementById("week").value;
-
-        if (!slotTime) {
-            const slotError = document.getElementById("slot-error");
-            slotError.textContent = "Please select a slot time.";
-            slotError.style.display = "block";
-            isValid = false;
-        } else {
-            const slotError = document.getElementById("slot-error");
-            slotError.style.display = "none";
-        }
-
-        if (!month) {
-            const monthError = document.getElementById("month-error");
-            monthError.textContent = "Please select a month.";
-            monthError.style.display = "block";
-            isValid = false;
-        } else {
-            const monthError = document.getElementById("month-error");
-            monthError.style.display = "none";
-        }
-
-        if (!week) {
-            const weekError = document.getElementById("week-error");
-            weekError.textContent = "Please select a week.";
-            weekError.style.display = "block";
-            isValid = false;
-        } else {
-            const weekError = document.getElementById("week-error");
-            weekError.style.display = "none";
-        }
-
-        // Validate Rate Your Skills (0 to 100)
         let skillsRating = document.getElementById("vol").value;
-        if (skillsRating > 20 || skillsRating < 100) {
-            const skillsError = document.getElementById("skills-error");
-            skillsError.textContent = "Skills rating must be between 20 and 100.";
-            skillsError.style.display = "block";
-            isValid = false;
-        } else {
-            const skillsError = document.getElementById("skills-error");
-            skillsError.style.display = "none";
-        }
+        let file = document.getElementById("myfile").files[0]?.name || "No file selected";
+        
+        // Get slot values
+        const slotTime = document.getElementById("appt").value.trim();
+        const slotMonth = document.getElementById("bdaymonth").value.trim();
+        const slotWeek = document.getElementById("week").value.trim();
 
-        // Other validations (username, password, email, etc.)
+        // Validate inputs
         if (username === "") {
-            const nameError = document.getElementById("name-error");
-            nameError.textContent = "Username is required";
-            nameError.style.display = "block";
+            document.getElementById("name-error").textContent = "Username is required";
             isValid = false;
-        } else {
-            const nameError = document.getElementById("name-error");
-            nameError.style.display = "none";
         }
 
-        if (password === "") {
-            const passwordError = document.getElementById("password-error");
-            passwordError.textContent = "Password is required";
-            passwordError.style.display = "block";
+        if (password.length < 6) {
+            document.getElementById("password-error").textContent = "Password must be at least 6 characters";
             isValid = false;
-        } else if (password.length < 6) {
-            const passwordError = document.getElementById("password-error");
-            passwordError.textContent = "Password must be at least 6 characters";
-            passwordError.style.display = "block";
-            isValid = false;
-        } else {
-            const passwordError = document.getElementById("password-error");
-            passwordError.style.display = "none";
         }
 
-        let emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (email === "") {
-            const emailError = document.getElementById("email-error");
-            emailError.textContent = "Email is required";
-            emailError.style.display = "block";
+        if (!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+            document.getElementById("email-error").textContent = "Invalid email format";
             isValid = false;
-        } else if (!emailPattern.test(email)) {
-            const emailError = document.getElementById("email-error");
-            emailError.textContent = "Please enter a valid email";
-            emailError.style.display = "block";
-            isValid = false;
-        } else {
-            const emailError = document.getElementById("email-error");
-            emailError.style.display = "none";
         }
 
-        let phonePattern = /^\d{7,15}$/;
-        if (phone === "") {
-            const phoneError = document.getElementById("number-error");
-            phoneError.textContent = "Phone number is required";
-            phoneError.style.display = "block";
+        if (!/^\d{7,15}$/.test(phone)) {
+            document.getElementById("number-error").textContent = "Phone number must be between 7 and 15 digits";
             isValid = false;
-        } else if (!phonePattern.test(phone)) {
-            const phoneError = document.getElementById("number-error");
-            phoneError.textContent = "Phone number must be between 7 and 15 digits";
-            phoneError.style.display = "block";
-            isValid = false;
-        } else {
-            const phoneError = document.getElementById("number-error");
-            phoneError.style.display = "none";
         }
 
-        let radioChecked = false;
-        radioButtons.forEach(radio => {
-            if (radio.checked) {
-                radioChecked = true;
-            }
-        });
-        if (!radioChecked) {
-            const radioError = document.getElementById("radio-error");
-            radioError.textContent = "Please select a language preference";
-            radioError.style.display = "block";
+        if (experience < 1 || experience > 5) {
+            document.getElementById("experience-error").textContent = "Experience must be between 1 and 5 years";
             isValid = false;
-        } else {
-            const radioError = document.getElementById("radio-error");
-            radioError.style.display = "none";
         }
 
-        if (experience < 1 || experience > 5 || experience === "") {
-            const experienceError = document.getElementById("experience-error");
-            experienceError.textContent = "Experience must be between 1 and 5 years";
-            experienceError.style.display = "block";
+        // Validate radio buttons
+        if (!document.querySelector("input[name='fav_language']:checked")) {
+            document.getElementById("radio-error").textContent = "Please select a language preference";
             isValid = false;
-        } else {
-            const experienceError = document.getElementById("experience-error");
-            experienceError.style.display = "none";
         }
 
-        if (fileInput.files.length === 0) {
-            const fileError = document.getElementById("file-error");
-            fileError.textContent = "Please select a file";
-            fileError.style.display = "block";
+        // Validate checkboxes
+        if (document.querySelectorAll("input[name='language']:checked").length === 0) {
+            document.getElementById("checkbox-error").textContent = "Please select at least one language";
+            isValid = false;
+        }
+
+        // Validate slot fields
+        if (slotTime === "") {
+            document.getElementById("slot-error").textContent = "Slot time is required";
+            isValid = false;
+        }
+
+        if (slotMonth === "") {
+            document.getElementById("month-error").textContent = "Month is required";
+            isValid = false;
+        }
+
+        if (slotWeek === "") {
+            document.getElementById("week-error").textContent = "Week is required";
+            isValid = false;
+        }
+
+        if (!file) {
+            document.getElementById("file-error").textContent = "Please upload a file";
             isValid = false;
         } else {
-            const fileError = document.getElementById("file-error");
-            fileError.style.display = "none";
-
-            const file = fileInput.files[0];
-            const allowedTypes = ["image/jpeg", "image/png", "image/gif"];
+            const fileSize = file.size / 1024 / 1024; // Convert to MB
+            const allowedTypes = ["image/jpeg", "image/png", "application/pdf"];
             if (!allowedTypes.includes(file.type)) {
-                const fileError = document.getElementById("file-error");
-                fileError.textContent = "Only image files (JPEG, PNG, GIF) are allowed";
-                fileError.style.display = "block";
+                document.getElementById("file-error").textContent = "Please upload a file";
+                isValid = false;
+            }
+            if (fileSize > 5) {
+                document.getElementById("file-error").textContent = "Please upload a file";
                 isValid = false;
             }
         }
 
-        let checkboxChecked = false;
-        checkboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                checkboxChecked = true;
-            }
+
+        // Show all error messages if invalid
+        document.querySelectorAll(".error-message").forEach(error => {
+            if (error.textContent) error.style.display = "block";
         });
-        if (!checkboxChecked) {
-            const checkboxError = document.getElementById("checkbox-error");
-            checkboxError.textContent = "Please select at least one language";
-            checkboxError.style.display = "block";
-            isValid = false;
-        } else {
-            const checkboxError = document.getElementById("checkbox-error");
-            checkboxError.style.display = "none";
-        }
 
         if (isValid) {
-            // Create a new row in the table
-            let tableBody = document.querySelector("#data-table tbody");
+            const tableBody = document.querySelector("#data-table tbody");
+            const newRow = editingRow || document.createElement("tr");
+            const checkboxes = document.querySelectorAll("input[name='language']:checked");
 
-            let newRow = document.createElement("tr");
+            newRow.innerHTML = `
+                <td>${username}</td>
+                <td>${password}</td>
+                <td>${email}</td>
+                <td>${phone}</td>
+                <td>${document.querySelector("input[name='fav_language']:checked").value}</td>
+                <td>${Array.from(checkboxes).map(cb => cb.value).join(", ")}</td>
+                <td>${slotTime}</td>
+                <td>${slotMonth}</td>
+                <td>${slotWeek}</td>
+                <td>${experience}</td>
+                <td>${skillsRating}</td>
+                <td>${file}</td>
+                <td>
+                    <button onclick="editRecord(this)">Edit</button>
+                    <button onclick="deleteRecord(this)">Delete</button>
+                </td>
+            `;
 
-            // Add table cells for the form data
-            let usernameCell = document.createElement("td");
-            usernameCell.textContent = username;
-            newRow.appendChild(usernameCell);
-
-            let passwordCell = document.createElement("td");
-            passwordCell.textContent = password;
-            newRow.appendChild(passwordCell);
-
-            let emailCell = document.createElement("td");
-            emailCell.textContent = email;
-            newRow.appendChild(emailCell);
-
-            let phoneCell = document.createElement("td");
-            phoneCell.textContent = phone;
-            newRow.appendChild(phoneCell);
-
-            let selectedLanguage = "";
-            radioButtons.forEach(radio => {
-                if (radio.checked) {
-                    selectedLanguage = radio.value;
-                }
-            });
-            let languageCell = document.createElement("td");
-            languageCell.textContent = selectedLanguage;
-            newRow.appendChild(languageCell);
-
-            let experienceCell = document.createElement("td");
-            experienceCell.textContent = experience;
-            newRow.appendChild(experienceCell);
-
-            let skillsRatingCell = document.createElement("td");
-            skillsRatingCell.textContent = skillsRating;
-            newRow.appendChild(skillsRatingCell);
-
-            let fileCell = document.createElement("td");
-            if (fileInput.files.length > 0) {
-                fileCell.textContent = fileInput.files[0].name;
+            if (editingRow) {
+                editingRow.replaceWith(newRow);
             } else {
-                fileCell.textContent = "No file selected";
+                tableBody.appendChild(newRow);
             }
-            newRow.appendChild(fileCell);
 
-            // Append the new row to the table
-            tableBody.appendChild(newRow);
-
-            // Reset the form
-            event.target.reset();
+            closeForm();
             alert("Form submitted successfully!");
         }
     });
 
-    // Range input value display
-    document.querySelector("#vol").addEventListener("input", function () {
-        document.querySelector("#range-value").textContent = this.value;
+    // Edit Record Function
+    window.editRecord = function (button) {
+        const row = button.closest("tr");
+        const cells = row.querySelectorAll("td");
+
+        document.getElementById("username").value = cells[0].textContent;
+        document.getElementById("pwd").value = cells[1].textContent;
+        document.getElementById("email").value = cells[2].textContent;
+        document.querySelector("input[name='phone']").value = cells[3].textContent;
+        document.getElementById("appt").value = cells[4].textContent;
+        document.getElementById("bdaymonth").value = cells[5].textContent;
+        document.getElementById("week").value = cells[6].textContent;
+        document.getElementById("quantity").value = cells[9].textContent;
+        document.getElementById("vol").value = cells[10].textContent;
+
+        // Set radio button
+        const selectedLanguage = cells[7].textContent;
+        document.querySelectorAll("input[name='fav_language']").forEach(radio => {
+            radio.checked = (radio.value === selectedLanguage);
+        });
+
+        // Set checkboxes
+        const selectedLanguages = cells[8].textContent.split(", ");
+        document.querySelectorAll("input[name='language']").forEach(checkbox => {
+            checkbox.checked = selectedLanguages.includes(checkbox.value);
+        });
+
+        editingRow = row;
+        openForm();
+    };
+
+    // Delete Record Function
+    window.deleteRecord = function (button) {
+        if (confirm("Are you sure you want to delete this record?")) {
+            button.closest("tr").remove();
+        }
+    };
+
+    // Range Value Display
+    document.getElementById("vol").addEventListener("input", function () {
+        document.getElementById("range-value").textContent = this.value;
     });
+
+    // Global Functions
+    window.openForm = openForm;
+    window.closeForm = closeForm;
 });

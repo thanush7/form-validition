@@ -1,102 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HTML Form</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
     <h1>All Input Types</h1>
-
-    <form class="form">
-        <div class="name">
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="username">
-            <div id="name-error" class="error"></div>
-        </div>
-        <div class="password">
-            <label for="pwd">Password:</label>
-            <input type="password" id="pwd" name="pwd">
-            <div id="password-error" class="error"></div>
-        </div>
-        <div class="email">
-            <label for="email">Enter your email:</label>
-            <input type="email" id="email" name="email">
-            <div id="email-error" class="error"></div>
-        </div>
-        <div class="number">
-            <label for="phone">Enter a phone number:</label>
-            <input type="number" name="phone" placeholder="123-45-678">
-            <div id="number-error" class="error"></div>
-        </div>
-        <div class="radio">
-            <p>Select any one :</p>
-            <input type="radio" id="online" name="fav_language" value="Online">
-            <label for="online">Online</label>
-            <input type="radio" id="offline" name="fav_language" value="Offline">
-            <label for="offline">Offline</label>
-            <input type="radio" id="both" name="fav_language" value="Both">
-            <label for="both">Both</label>
-            <div id="radio-error" class="error"></div>
-        </div>
-        <div class="check-box">
-            <p>Choose your language:</p>
-            <input type="checkbox" value="HTML" id="html" name="language">
-            <label for="html">HTML</label><br>
-            <input type="checkbox" value="CSS" id="css" name="language">
-            <label for="css">CSS</label><br>
-            <input type="checkbox" value="JavaScript" id="js" name="language">
-            <label for="js">JavaScript</label><br>
-            <div id="checkbox-error" class="error"></div>
-        </div>
-
-        <div class="color">
-            <label for="favcolor">Select your favorite color:</label>
-            <input type="color" id="favcolor" name="favcolor" value="#0000">
-        </div>
-        <div class="slot">
-            <p>Exam venue: </p>
-            <div class="time">
-                <label for="appt">Slot time:</label>
-                <input type="time" id="appt" name="appt">
-                <div id="slot-error" class="error"></div>
+    <button id="add-button">Add</button>
+    <div class="overlay" id="overlay"></div>
+    <div class="form-popup" id="form-popup">
+        <form class="form">
+            <span class="close-btn" onclick="closeForm()">&times;</span>
+            <div class="name">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username">
+                <div id="name-error" class="error-message"></div>
             </div>
-            <div class="month">
-                <label for="bdaymonth">Month:</label>
-                <input type="month" id="bdaymonth" name="bdaymonth">
-                <div id="month-error" class="error"></div>
+            <div class="password">
+                <label for="pwd">Password:</label>
+                <input type="password" id="pwd" name="pwd">
+                <div id="password-error" class="error-message"></div>
             </div>
-            <div class="date">
-                <label for="week">Date:</label>
-                <input type="week" id="week" name="week">
-                <div id="week-error" class="error"></div>
+            <div class="email">
+                <label for="email">Enter your email:</label>
+                <input type="email" id="email" name="email">
+                <div id="email-error" class="error-message"></div>
             </div>
-
-        </div>
-        <div class="experience">
-            <label for="quantity">Experience</label>
-            <input type="number" id="quantity" name="quantity" min="1" max="5">
-            <div id="experience-error" class="error"></div>
-        </div>
-        <div class="rate">
-            <label for="vol">Rate your Skills (0 to 100):</label>
-            <input type="range" id="vol" name="vol" min="0" max="100">
-            <span id="range-value">0</span>
-            <div id="skills-error" class="error"></div>
-        </div>
-        <div class="file">
-            <label for="myfile">Select a file:</label>
-            <input type="file" id="myfile" name="myfile">
-            <div id="file-error" class="error"></div>
-        </div>
-        <div class="btn">
-            <input type="reset" value="Reset">
-            <input type="submit" value="Submit">
-        </div>
-    </form>
+            <div class="number">
+                <label for="phone">Enter a phone number:</label>
+                <input type="number" name="phone" placeholder="123-45-678">
+                <div id="number-error" class="error-message"></div>
+            </div>
+            <div class="radio">
+                <p>Select any one:</p>
+                <input type="radio" id="online" name="fav_language" value="Online">
+                <label for="online">Online</label>
+                <input type="radio" id="offline" name="fav_language" value="Offline">
+                <label for="offline">Offline</label>
+                <input type="radio" id="both" name="fav_language" value="Both">
+                <label for="both">Both</label>
+                <div id="radio-error" class="error-message"></div>
+            </div>
+            <div class="check-box">
+                <p>Choose your language:</p>
+                <input type="checkbox" value="HTML" id="html" name="language">
+                <label for="html">HTML</label><br>
+                <input type="checkbox" value="CSS" id="css" name="language">
+                <label for="css">CSS</label><br>
+                <input type="checkbox" value="JavaScript" id="js" name="language">
+                <label for="js">JavaScript</label><br>
+                <div id="checkbox-error" class="error-message"></div>
+            </div>
+            <div class="color">
+                <label for="favcolor">Select your favorite color:</label>
+                <input type="color" id="favcolor" name="favcolor" value="#0000">
+            </div>
+            <div class="slot">
+                <p>Exam venue:</p>
+                <div class="time">
+                    <label for="appt">Slot time:</label>
+                    <input type="time" id="appt" name="appt">
+                    <div id="slot-error" class="error-message"></div>
+                </div>
+                <div class="month">
+                    <label for="bdaymonth">Month:</label>
+                    <input type="month" id="bdaymonth" name="bdaymonth">
+                    <div id="month-error" class="error-message"></div>
+                </div>
+                <div class="date">
+                    <label for="week">Date:</label>
+                    <input type="week" id="week" name="week">
+                    <div id="week-error" class="error-message"></div>
+                </div>
+            </div>
+            <div class="experience">
+                <label for="quantity">Experience</label>
+                <input type="number" id="quantity" name="quantity" min="1" max="5">
+                <div id="experience-error" class="error-message"></div>
+            </div>
+            <div class="rate">
+                <label for="vol">Rate your Skills (0 to 100):</label>
+                <input type="range" id="vol" name="vol" min="0" max="100">
+                <span id="range-value">0</span>
+                <div id="skills-error" class="error-message"></div>
+            </div>
+            <div class="file">
+                <label for="myfile">Select a file:</label>
+                <input type="file" id="myfile" name="myfile">
+                <div id="file-error" class="error-message"></div>
+            </div>
+            <div class="btn">
+                <input type="reset" value="Reset" onclick="clearErrors()">
+                <input type="submit" value="Submit">
+            </div>
+        </form>
+    </div>
 
     <!-- Table to display the form data -->
     <h2>Submitted Data</h2>
@@ -107,10 +107,15 @@
                 <th>Password</th>
                 <th>Email</th>
                 <th>Phone Number</th>
+                <th>mode</th>
                 <th>Language Preference</th>
+                <td>slotTime</td>
+                <td>slotMonth</td>
+                <td>slotWeek</td>
                 <th>Experience</th>
                 <th>Skills Rating</th>
                 <th>File</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -120,5 +125,4 @@
 
     <script src="script.js"></script>
 </body>
-
 </html>
