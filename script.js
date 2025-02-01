@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Validate Rate Your Skills (0 to 100)
         let skillsRating = document.getElementById("vol").value;
-        if (skillsRating > 20 && skillsRating < 100) {
+        if (skillsRating > 20 || skillsRating < 100) {
             const skillsError = document.getElementById("skills-error");
             skillsError.textContent = "Skills rating must be between 20 and 100.";
             skillsError.style.display = "block";
